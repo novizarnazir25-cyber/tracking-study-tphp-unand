@@ -8,7 +8,7 @@ export async function GET() {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
-  // Get additional info like lecturer name
+  // Get additional info like lecturer name or student details
   let lecturer = null;
   if (user.lecturerId) {
     lecturer = await prisma.lecturer.findUnique({
@@ -16,10 +16,22 @@ export async function GET() {
     });
   }
 
+  let student = null;
+  if (user.studentId) {
+    student = await prisma.student.findUnique({
+      where: { id: user.studentId },
+      include: {
+        pembimbingUtama: { select: { id: true, namaGelar: true, email: true, noHp: true } },
+        pembimbingPendamping: { select: { id: true, namaGelar: true, email: true, noHp: true } },
+      },
+    });
+  }
+
   return NextResponse.json({
     user: {
       ...user,
       lecturer,
+      student,
     },
   });
 }

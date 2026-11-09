@@ -34,7 +34,7 @@ export default function PanduanPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [demoCount, setDemoCount] = useState(0);
-  const [activeTab, setActiveTab] = useState<'semua' | 'dosen' | 'kaprodi' | 'admin' | 'faq'>('semua');
+  const [activeTab, setActiveTab] = useState<'semua' | 'mahasiswa' | 'dosen' | 'kaprodi' | 'admin' | 'faq'>('semua');
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchData = async () => {
@@ -116,6 +116,7 @@ export default function PanduanPage() {
               <div className="flex flex-wrap gap-1.5">
                 {[
                   { id: 'semua', label: 'Ringkasan & Konsep Pokok' },
+                  { id: 'mahasiswa', label: 'Panduan Mahasiswa' },
                   { id: 'dosen', label: 'Panduan Dosen Pembimbing' },
                   { id: 'kaprodi', label: 'Panduan Ketua Prodi' },
                   { id: 'admin', label: 'Panduan Administrator' },
@@ -223,13 +224,60 @@ export default function PanduanPage() {
             </div>
           )}
 
-          {/* TAB 2: PANDUAN DOSEN PEMBIMBING */}
+          {/* TAB: PANDUAN MAHASISWA TPHP */}
+          {(activeTab === 'mahasiswa' || activeTab === 'semua' || searchQuery) && (
+            <div className="space-y-6 pt-4">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <GraduationCap className="w-5 h-5 text-purple-700" />
+                  2. Panduan Mahasiswa TPHP: Akses Sistem & Pelaporan Kemajuan Mandiri
+                </h2>
+                <span className="text-xs text-purple-800 bg-purple-100 px-2.5 py-0.5 rounded-full font-mono font-bold">
+                  Role: MAHASISWA
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-2">
+                  <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-800 font-bold flex items-center justify-center">
+                    1
+                  </div>
+                  <h4 className="font-bold text-sm text-slate-900">Cara Masuk (Login)</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Gunakan <strong>NIM Anda</strong> sebagai Nama Pengguna dan Kata Sandi (atau <code className="font-mono bg-slate-100 px-1 py-0.5 rounded">mhs123</code>). Seluruh mahasiswa aktif telah otomatis memiliki akun aktif.
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-2">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center">
+                    2
+                  </div>
+                  <h4 className="font-bold text-sm text-slate-900">Input Kemajuan Studi</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Klik tombol <strong>"Input Kemajuan Studi Saya"</strong> di Portal Mahasiswa. Laporkan ringkasan kegiatan, pembaruan status bab skripsi, dan tanggal asistensi terakhir bersama pembimbing.
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-2">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 font-bold flex items-center justify-center">
+                    3
+                  </div>
+                  <h4 className="font-bold text-sm text-slate-900">Permohonan Fasilitasi Prodi</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Jika terkendala fasilitas laboratorium, antrian pengujian alat, atau memerlukan mediasi jadwal, centang permohonan bantuan agar pimpinan departemen segera menindaklanjuti.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: PANDUAN DOSEN PEMBIMBING */}
           {(activeTab === 'dosen' || activeTab === 'semua' || searchQuery) && (
             <div className="space-y-6 pt-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <Users className="w-5 h-5 text-emerald-700" />
-                  2. Panduan Dosen Pembimbing (Utama & Pendamping)
+                  3. Panduan Dosen Pembimbing (Utama & Pendamping)
                 </h2>
                 <span className="text-xs text-slate-500 font-mono">Role: DOSEN</span>
               </div>

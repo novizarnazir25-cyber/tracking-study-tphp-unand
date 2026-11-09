@@ -74,7 +74,11 @@ export default function Navbar({ user, onUserSwitch }: Props) {
       if (res.ok) {
         setShowRoleSwitcher(false);
         if (onUserSwitch) onUserSwitch(data.user);
-        window.location.reload();
+        if (data.redirectTo) {
+          window.location.href = data.redirectTo;
+        } else {
+          window.location.reload();
+        }
       }
     } catch (e) {
       console.error(e);
@@ -86,7 +90,10 @@ export default function Navbar({ user, onUserSwitch }: Props) {
       <header className="bg-unand-950 text-white border-b border-unand-900 sticky top-0 z-40 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Brand Logo & Title */}
-          <Link href="/dashboard" className="flex items-center gap-3 shrink-0 group">
+          <Link
+            href={user?.role === 'MAHASISWA' ? '/mahasiswa/portal' : '/dashboard'}
+            className="flex items-center gap-3 shrink-0 group"
+          >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-unand-700 to-unand-900 border border-gold-400 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
               <GraduationCap className="w-6 h-6 text-gold-300" />
             </div>
@@ -152,6 +159,13 @@ export default function Navbar({ user, onUserSwitch }: Props) {
                       <span className="font-semibold text-slate-800">2. Ketua Prodi / Tim Pemantauan</span>
                       <span className="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-mono">KAPRODI</span>
                     </button>
+                    <button
+                      onClick={() => switchAccount('MAHASISWA')}
+                      className="w-full text-left px-3 py-2 hover:bg-slate-100 flex items-center justify-between"
+                    >
+                      <span className="font-semibold text-slate-800">3. Mahasiswa TPHP (Portal & Input)</span>
+                      <span className="text-[10px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-mono">MHS</span>
+                    </button>
                   </div>
 
                   <div className="px-3 pt-2 pb-1 border-t text-[11px] font-bold text-slate-500 uppercase tracking-wider">
@@ -213,6 +227,8 @@ export default function Navbar({ user, onUserSwitch }: Props) {
                     ? 'Operator Prodi'
                     : user?.role === 'KAPRODI'
                     ? 'Ketua / Tim Pantau'
+                    : user?.role === 'MAHASISWA'
+                    ? 'Mahasiswa TPHP'
                     : 'Dosen Pembimbing'}
                 </span>
               </div>

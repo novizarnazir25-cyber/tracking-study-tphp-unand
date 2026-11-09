@@ -13,13 +13,15 @@ model User {
   name        String
   email       String?
   password    String
-  role        String   // ADMIN, KAPRODI, DOSEN
+  role        String   // ADMIN, KAPRODI, DOSEN, MAHASISWA
   lecturerId  String?
+  studentId   String?  @unique
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   lecturer    Lecturer? @relation(fields: [lecturerId], references: [id])
+  student     Student?  @relation(fields: [studentId], references: [id])
   reports     ProgressReport[]
   auditLogs   AuditLog[]
 }
@@ -74,6 +76,7 @@ model Student {
 
   pembimbingUtama       Lecturer? @relation("PembimbingUtama", fields: [pembimbingUtamaId], references: [id])
   pembimbingPendamping  Lecturer? @relation("PembimbingPendamping", fields: [pembimbingPendampingId], references: [id])
+  user                  User?
   stages                StudentStage[]
   chapters              ThesisChapterProgress[]
   reports               ProgressReport[]

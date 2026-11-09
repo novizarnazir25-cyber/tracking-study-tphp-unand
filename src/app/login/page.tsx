@@ -43,7 +43,7 @@ export default function LoginPage() {
         throw new Error(data.error || 'Gagal masuk.');
       }
 
-      router.push('/dashboard');
+      router.push(data.redirectTo || '/dashboard');
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'Terjadi kesalahan sistem.');
@@ -70,7 +70,7 @@ export default function LoginPage() {
         throw new Error(data.error || 'Gagal masuk.');
       }
 
-      router.push('/dashboard');
+      router.push(data.redirectTo || '/dashboard');
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'Terjadi kesalahan sistem.');
@@ -133,7 +133,7 @@ export default function LoginPage() {
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Nama Pengguna / NIP / Email
+                Nama Pengguna / NIM / NIP / Email
               </label>
               <div className="relative rounded-lg shadow-2xs">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -144,7 +144,7 @@ export default function LoginPage() {
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="admin / kaprodi / aisman"
+                  placeholder="NIM (untuk Mahasiswa) / admin / aisman"
                   className="block w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-unand-800 focus:border-unand-800"
                 />
               </div>
@@ -167,6 +167,9 @@ export default function LoginPage() {
                   className="block w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-unand-800 focus:border-unand-800"
                 />
               </div>
+              <p className="mt-1.5 text-[11px] text-emerald-700 font-medium bg-emerald-50/70 p-2 rounded-lg border border-emerald-200/60">
+                💡 <strong>Mahasiswa Aktif TPHP:</strong> Masuk menggunakan <strong>NIM</strong> Anda sebagai Username & Kata Sandi (atau <code className="font-mono">mhs123</code>).
+              </p>
             </div>
 
             <button
@@ -190,6 +193,21 @@ export default function LoginPage() {
             </p>
 
             <div className="grid grid-cols-1 gap-2">
+              {/* Mahasiswa Quick Login */}
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('MAHASISWA', '1911121001', '1911121001')}
+                className="w-full text-left p-2.5 rounded-lg border border-purple-200 bg-purple-50/60 hover:bg-purple-100 transition flex items-center justify-between text-xs"
+              >
+                <div>
+                  <span className="font-bold text-purple-950 block">Mahasiswa: Arief Hidayatullah</span>
+                  <span className="text-[10px] text-purple-700">Uji portal & input kemajuan studi mandiri mahasiswa</span>
+                </div>
+                <span className="text-[10px] font-mono font-bold bg-purple-200 text-purple-900 px-2 py-0.5 rounded">
+                  1911121001
+                </span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => handleQuickLogin('ADMIN', 'admin', 'admin123')}
@@ -229,20 +247,6 @@ export default function LoginPage() {
                 </div>
                 <span className="text-[10px] font-mono font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded">
                   aisman
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('DOSEN', 'ismed', 'dosen123')}
-                className="w-full text-left p-2.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition flex items-center justify-between text-xs"
-              >
-                <div>
-                  <span className="font-bold text-slate-800 block">Dosen: Dr. Ismed</span>
-                  <span className="text-[10px] text-slate-500">Uji sudut pandang pembimbing pendamping</span>
-                </div>
-                <span className="text-[10px] font-mono font-bold bg-slate-200 text-slate-800 px-2 py-0.5 rounded">
-                  ismed
                 </span>
               </button>
             </div>

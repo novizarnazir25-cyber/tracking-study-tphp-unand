@@ -404,6 +404,27 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Auto-create user login account for active students
+    if (student.statusAkademik === 'aktif') {
+      try {
+        const bcrypt = require('bcryptjs');
+        const passHash = await bcrypt.hash(student.nim, 10);
+        await prisma.user.create({
+          data: {
+            username: student.nim,
+            name: student.nama,
+            email: student.email || `${student.nim}@student.unand.ac.id`,
+            password: passHash,
+            role: 'MAHASISWA',
+            studentId: student.id,
+            isActive: true,
+          },
+        });
+      } catch (err: any) {
+        console.log('Catatan pembuatan akun user mahasiswa:', err.message);
+      }
+    }
+
     await logAudit({
       userId: user.id,
       userName: user.name,

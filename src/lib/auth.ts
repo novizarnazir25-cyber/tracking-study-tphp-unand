@@ -10,8 +10,9 @@ export interface SessionUser {
   username: string;
   name: string;
   email: string | null;
-  role: 'ADMIN' | 'KAPRODI' | 'DOSEN';
+  role: 'ADMIN' | 'KAPRODI' | 'DOSEN' | 'MAHASISWA';
   lecturerId: string | null;
+  studentId: string | null;
 }
 
 export function signToken(user: SessionUser): string {
@@ -23,6 +24,7 @@ export function signToken(user: SessionUser): string {
       email: user.email,
       role: user.role,
       lecturerId: user.lecturerId,
+      studentId: user.studentId,
     },
     JWT_SECRET,
     { expiresIn: '7d' }
@@ -49,7 +51,16 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     // Optional check in DB to ensure user is active
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: { id: true, username: true, name: true, email: true, role: true, lecturerId: true, isActive: true },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        email: true,
+        role: true,
+        lecturerId: true,
+        studentId: true,
+        isActive: true,
+      },
     });
 
     if (!user || !user.isActive) return null;
@@ -59,8 +70,9 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       username: user.username,
       name: user.name,
       email: user.email,
-      role: user.role as 'ADMIN' | 'KAPRODI' | 'DOSEN',
+      role: user.role as 'ADMIN' | 'KAPRODI' | 'DOSEN' | 'MAHASISWA',
       lecturerId: user.lecturerId,
+      studentId: user.studentId,
     };
   } catch {
     return null;
@@ -70,6 +82,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
 /**
  * Checks if current user has permission to view a specific student.
  * Lecturers can only access their own supervised students (as primary or co-advisor).
+ * Students can only access their own record.
  * Admin and Kaprodi can access all students.
  */
 export async function canAccessStudent(
@@ -78,6 +91,18 @@ export async function canAccessStudent(
 ): Promise<{ allowed: boolean; isSupervisor: boolean; isPrimary: boolean; reason?: string }> {
   if (user.role === 'ADMIN' || user.role === 'KAPRODI') {
     return { allowed: true, isSupervisor: false, isPrimary: false };
+  }
+
+  if (user.role === 'MAHASISWA') {
+    if (user.studentId && user.studentId === studentId) {
+      return { allowed: true, isSupervisor: false, isPrimary: false };
+    }
+    return {
+      allowed: false,
+      isSupervisor: false,
+      isPrimary: false,
+      reason: 'Akses ditolak: Anda hanya memiliki hak akses ke data kemajuan studi Anda sendiri.',
+    };
   }
 
   if (user.role === 'DOSEN') {

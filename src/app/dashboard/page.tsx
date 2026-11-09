@@ -54,6 +54,12 @@ export default function DashboardPage() {
       const userData = await userRes.json();
       setCurrentUser(userData.user);
 
+      // Jika role adalah MAHASISWA, alihkan ke portal mahasiswa khusus
+      if (userData.user.role === 'MAHASISWA') {
+        router.push('/mahasiswa/portal');
+        return;
+      }
+
       // 2. All students
       const stdRes = await fetch('/api/students?limit=200');
       const stdData = await stdRes.json();

@@ -25,8 +25,15 @@ interface Props {
 export default function Sidebar({ userRole }: Props) {
   const pathname = usePathname();
 
-  // 8 Main Menus strictly as specified in Section 14
+  // 8 Main Menus strictly as specified in Section 14 + Portal Mahasiswa
   const menuItems = [
+    {
+      title: 'Portal Studi Saya',
+      href: '/mahasiswa/portal',
+      icon: GraduationCap,
+      roles: ['MAHASISWA'],
+      highlight: true,
+    },
     {
       title: '1. Dashboard',
       href: '/dashboard',
@@ -80,13 +87,13 @@ export default function Sidebar({ userRole }: Props) {
       title: '9. Panduan Penggunaan',
       href: '/panduan',
       icon: BookOpen,
-      roles: ['ADMIN', 'KAPRODI', 'DOSEN'],
+      roles: ['ADMIN', 'KAPRODI', 'DOSEN', 'MAHASISWA'],
     },
     {
       title: 'Kata Pengantar',
       href: '/kata-pengantar',
       icon: Quote,
-      roles: ['ADMIN', 'KAPRODI', 'DOSEN'],
+      roles: ['ADMIN', 'KAPRODI', 'DOSEN', 'MAHASISWA'],
     },
   ];
 
@@ -107,6 +114,8 @@ export default function Sidebar({ userRole }: Props) {
               ? 'Administrator / Operator'
               : userRole === 'KAPRODI'
               ? 'Ketua / Tim Pemantau'
+              : userRole === 'MAHASISWA'
+              ? 'Mahasiswa TPHP'
               : 'Dosen Pembimbing'}
           </span>
           <span
@@ -115,6 +124,8 @@ export default function Sidebar({ userRole }: Props) {
                 ? 'bg-emerald-100 text-emerald-800'
                 : userRole === 'KAPRODI'
                 ? 'bg-blue-100 text-blue-800'
+                : userRole === 'MAHASISWA'
+                ? 'bg-purple-100 text-purple-800'
                 : 'bg-amber-100 text-amber-800'
             }`}
           >

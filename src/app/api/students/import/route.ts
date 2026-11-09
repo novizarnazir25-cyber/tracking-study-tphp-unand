@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { logAudit } from '@/lib/audit';
 import { getJakartaDateString } from '@/lib/timezone';
+import { ensureStudentUserAccounts } from '@/lib/studentAccounts';
 
 export async function POST(req: NextRequest) {
   try {
@@ -243,6 +244,9 @@ export async function POST(req: NextRequest) {
           createdCount++;
         }
       }
+
+      // Pastikan seluruh mahasiswa aktif yang baru diimpor langsung memiliki akun login
+      await ensureStudentUserAccounts().catch((e) => console.log('Auto sync user on import:', e.message));
 
       await logAudit({
         userId: user.id,

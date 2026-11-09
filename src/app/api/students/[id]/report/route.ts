@@ -94,6 +94,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     let reporterRole = 'Dosen';
     if (user.role === 'ADMIN') reporterRole = 'Administrator Prodi';
     else if (user.role === 'KAPRODI') reporterRole = 'Ketua / Tim Pemantauan Prodi';
+    else if (user.role === 'MAHASISWA') reporterRole = 'Mahasiswa (Pelaporan Mandiri)';
     else if (access.isPrimary) reporterRole = 'Pembimbing Utama';
     else if (access.isSupervisor) reporterRole = 'Pembimbing Pendamping';
 
