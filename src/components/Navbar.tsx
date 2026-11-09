@@ -13,6 +13,7 @@ import {
   Shield,
   BookOpen,
   HelpCircle,
+  Quote,
 } from 'lucide-react';
 import NotificationModal from './NotificationModal';
 
@@ -105,7 +106,17 @@ export default function Navbar({ user, onUserSwitch }: Props) {
           </Link>
 
           {/* Right Header Navigation & Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            {/* Tautan Navigasi Kata Pengantar */}
+            <Link
+              href="/kata-pengantar"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition border border-white/10"
+              title="Kata Pengantar Ketua Departemen TPHP"
+            >
+              <Quote className="w-3.5 h-3.5 text-gold-400" />
+              <span className="hidden sm:inline">Kata Pengantar</span>
+            </Link>
+
             {/* Quick Role Switcher for Testing (Section 16: Pengujian alur peran) */}
             <div className="relative">
               <button

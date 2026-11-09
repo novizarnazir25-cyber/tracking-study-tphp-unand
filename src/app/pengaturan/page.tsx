@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import DemoBanner from '@/components/DemoBanner';
+import EditKataPengantarModal from '@/components/EditKataPengantarModal';
 import {
   Settings,
   Bell,
@@ -21,6 +23,9 @@ import {
   Mail,
   Sliders,
   Image,
+  Quote,
+  Edit3,
+  ExternalLink,
 } from 'lucide-react';
 
 export default function PengaturanPage() {
@@ -52,6 +57,8 @@ export default function PengaturanPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saving, setSaving] = useState(false);
   const [restoreLoading, setRestoreLoading] = useState(false);
+  const [showKataPengantarModal, setShowKataPengantarModal] = useState(false);
+  const [kataPengantarData, setKataPengantarData] = useState<any>(null);
 
   const fetchSettings = async () => {
     setLoading(true);
@@ -71,6 +78,10 @@ export default function PengaturanPage() {
       const res = await fetch('/api/settings');
       const data = await res.json();
       const map = data.data || {};
+
+      const kpRes = await fetch('/api/kata-pengantar');
+      const kpData = await kpRes.json();
+      if (kpData.data) setKataPengantarData(kpData.data);
 
       setReminderReportDays(map['reminder_report_days'] || '30');
       setReminderSubstantiveDays(map['reminder_substantive_days'] || '60');
@@ -483,6 +494,70 @@ export default function PengaturanPage() {
             </div>
           </form>
 
+          {/* Group 4.5: Pengaturan Konten Kata Pengantar Ketua Departemen */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+              <div className="flex items-center gap-2">
+                <Quote className="w-5 h-5 text-unand-800" />
+                <div>
+                  <h3 className="font-bold text-sm text-slate-900">
+                    Kata Pengantar Ketua Departemen TPHP
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Pengelolaan foto resmi, nama, gelar, jabatan, dan naskah sambutan resmi Ketua Departemen di beranda & halaman khusus.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/kata-pengantar"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  Lihat Halaman
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setShowKataPengantarModal(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-unand-800 hover:bg-unand-900 text-white rounded-lg text-xs font-semibold shadow-xs transition"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  Ubah Konten & Foto
+                </button>
+              </div>
+            </div>
+
+            <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-xl flex flex-col sm:flex-row items-center sm:items-start gap-4">
+              <div className="w-20 h-24 rounded-lg overflow-hidden border border-slate-200 bg-white shadow-xs shrink-0 flex items-center justify-center">
+                <img
+                  src={kataPengantarData?.photoUrl || '/ketua-departemen.jpg'}
+                  alt="Foto Ketua Departemen"
+                  className="w-full h-full object-cover object-top"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/logo-unand.png';
+                  }}
+                />
+              </div>
+              <div className="flex-1 space-y-1 text-center sm:text-left">
+                <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                  Pejabat Ketua Departemen
+                </div>
+                <div className="text-sm font-bold text-slate-900">
+                  {kataPengantarData?.name || 'Prof. Dr. Novizar Nazir'}
+                </div>
+                <div className="text-xs font-medium text-unand-800">
+                  {kataPengantarData?.position || 'Ketua Departemen Teknologi Pangan dan Hasil Pertanian'}
+                </div>
+                <div className="text-xs text-slate-500">
+                  {kataPengantarData?.institution || 'Fakultas Teknologi Pertanian, Universitas Andalas'}
+                </div>
+                <p className="text-xs text-slate-600 line-clamp-2 pt-1">
+                  {kataPengantarData?.p1 || 'Puji syukur ke hadirat Allah SWT atas rahmat dan karunia-Nya...'}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Group 5: Pencadangan & Pemulihan Database (Section 15) */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
             <div className="flex items-center gap-2 border-b pb-3">
@@ -597,6 +672,18 @@ export default function PengaturanPage() {
               </table>
             </div>
           </div>
+
+          {showKataPengantarModal && (
+            <EditKataPengantarModal
+              isOpen={showKataPengantarModal}
+              onClose={() => setShowKataPengantarModal(false)}
+              data={kataPengantarData}
+              onSuccess={(updated) => {
+                setKataPengantarData(updated);
+                fetchSettings();
+              }}
+            />
+          )}
         </main>
       </div>
     </div>

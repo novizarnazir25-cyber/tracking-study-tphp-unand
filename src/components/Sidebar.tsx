@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ClipboardList,
   BookOpen,
+  Quote,
 } from 'lucide-react';
 
 interface Props {
@@ -79,6 +80,12 @@ export default function Sidebar({ userRole }: Props) {
       title: '9. Panduan Penggunaan',
       href: '/panduan',
       icon: BookOpen,
+      roles: ['ADMIN', 'KAPRODI', 'DOSEN'],
+    },
+    {
+      title: 'Kata Pengantar',
+      href: '/kata-pengantar',
+      icon: Quote,
       roles: ['ADMIN', 'KAPRODI', 'DOSEN'],
     },
   ];

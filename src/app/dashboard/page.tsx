@@ -8,6 +8,7 @@ import Sidebar from '@/components/Sidebar';
 import DemoBanner from '@/components/DemoBanner';
 import StatusBadge from '@/components/StatusBadge';
 import AnnouncementCard from '@/components/AnnouncementCard';
+import KataPengantarSection from '@/components/KataPengantarSection';
 import {
   Users,
   AlertTriangle,
@@ -29,6 +30,7 @@ import {
   Maximize2,
   ZoomIn,
   X,
+  Quote,
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -309,13 +311,23 @@ export default function DashboardPage() {
                     <Calendar className="w-3.5 h-3.5 text-gold-300" />
                     <span>Log Pelaporan Dosen &rarr;</span>
                   </button>
-                  <Link
-                    href="/panduan"
-                    className="hover:text-gold-300 font-semibold transition flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg border border-white/15 text-white"
-                  >
-                    <BookOpen className="w-3.5 h-3.5 text-gold-300" />
-                    <span>Panduan Penggunaan</span>
-                  </Link>
+                  <div className="flex items-center gap-1.5">
+                    <Link
+                      href="#kata-pengantar"
+                      className="hover:text-gold-300 font-semibold transition flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg border border-white/15 text-white"
+                      title="Lihat Kata Pengantar Ketua Departemen"
+                    >
+                      <Quote className="w-3.5 h-3.5 text-gold-300" />
+                      <span>Kata Pengantar</span>
+                    </Link>
+                    <Link
+                      href="/panduan"
+                      className="hover:text-gold-300 font-semibold transition flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg border border-white/15 text-white"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-gold-300" />
+                      <span>Panduan Penggunaan</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -323,6 +335,9 @@ export default function DashboardPage() {
 
           {/* Tempat Pengumuman Resmi Program Studi di Halaman Depan */}
           <AnnouncementCard variant="dashboard" userRole={currentUser?.role} />
+
+          {/* Bagian Kata Pengantar Ketua Departemen TPHP */}
+          <KataPengantarSection />
 
           {/* Top 11 Indicator Metric Cards */}
           <div>
