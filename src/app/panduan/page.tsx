@@ -28,6 +28,7 @@ import {
   Layers,
   ArrowRight,
   Lock,
+  Home,
 } from 'lucide-react';
 
 export default function PanduanPage() {
@@ -105,8 +106,8 @@ export default function PanduanPage() {
                   href="/dashboard"
                   className="bg-gold-500 hover:bg-gold-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition flex items-center gap-1.5"
                 >
-                  <span>Buka Dashboard</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <Home className="w-4 h-4 text-slate-950" />
+                  <span>Kembali ke Beranda Utama</span>
                 </Link>
               </div>
             </div>

@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import DemoBanner from '@/components/DemoBanner';
 import KataPengantarSection from '@/components/KataPengantarSection';
-import { ArrowLeft, Quote, HeartHandshake } from 'lucide-react';
+import { ArrowLeft, Quote, HeartHandshake, Home } from 'lucide-react';
 
 export default function KataPengantarPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -42,13 +42,14 @@ export default function KataPengantarPage() {
         <Sidebar userRole={currentUser?.role || 'DOSEN'} />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full space-y-6">
-          {/* Top Breadcrumb & Back */}
+          {/* Top Breadcrumb & Back to Home */}
           <div className="flex items-center justify-between">
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-unand-800 transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-unand-800 hover:bg-slate-50 transition shadow-2xs"
             >
-              <ArrowLeft className="w-4 h-4" /> Kembali ke Dashboard
+              <Home className="w-4 h-4 text-unand-800" />
+              <span>&larr; Kembali ke Beranda / Halaman Utama</span>
             </Link>
           </div>
 

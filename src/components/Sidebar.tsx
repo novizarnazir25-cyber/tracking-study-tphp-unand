@@ -16,6 +16,7 @@ import {
   ClipboardList,
   BookOpen,
   Quote,
+  Home,
 } from 'lucide-react';
 
 interface Props {
@@ -28,16 +29,16 @@ export default function Sidebar({ userRole }: Props) {
   // 8 Main Menus strictly as specified in Section 14 + Portal Mahasiswa
   const menuItems = [
     {
-      title: 'Portal Studi Saya',
+      title: 'Beranda Studi Saya',
       href: '/mahasiswa/portal',
-      icon: GraduationCap,
+      icon: Home,
       roles: ['MAHASISWA'],
       highlight: true,
     },
     {
-      title: '1. Dashboard',
+      title: '1. Beranda / Dashboard',
       href: '/dashboard',
-      icon: LayoutDashboard,
+      icon: Home,
       roles: ['ADMIN', 'KAPRODI', 'DOSEN'],
     },
     {

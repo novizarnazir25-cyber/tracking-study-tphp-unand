@@ -26,6 +26,7 @@ import {
   Quote,
   Edit3,
   ExternalLink,
+  Home,
 } from 'lucide-react';
 
 export default function PengaturanPage() {
@@ -204,6 +205,17 @@ export default function PengaturanPage() {
         <Sidebar userRole={currentUser?.role || 'DOSEN'} />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
+          {/* Breadcrumb & Tombol Beranda */}
+          <div className="flex items-center justify-between">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-unand-800 hover:bg-slate-50 transition shadow-2xs"
+            >
+              <Home className="w-4 h-4 text-unand-800" />
+              <span>&larr; Kembali ke Beranda / Halaman Utama</span>
+            </Link>
+          </div>
+
           {/* Header */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>

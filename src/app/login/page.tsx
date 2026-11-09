@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   GraduationCap,
   Lock,
@@ -11,6 +12,8 @@ import {
   ArrowRight,
   AlertCircle,
   CheckCircle,
+  Home,
+  Quote,
 } from 'lucide-react';
 import AnnouncementCard from '@/components/AnnouncementCard';
 
@@ -98,6 +101,24 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg px-4 space-y-4">
+        {/* Tombol Cepat ke Beranda & Kata Pengantar */}
+        <div className="flex items-center justify-between gap-3 text-xs font-semibold">
+          <Link
+            href="/dashboard"
+            className="text-emerald-200 hover:text-white transition flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/15 shadow-2xs"
+          >
+            <Home className="w-3.5 h-3.5 text-gold-300" />
+            <span>&larr; Ke Beranda Utama</span>
+          </Link>
+          <Link
+            href="/kata-pengantar"
+            className="text-emerald-200 hover:text-white transition flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/15 shadow-2xs"
+          >
+            <Quote className="w-3.5 h-3.5 text-gold-300" />
+            <span>Kata Pengantar</span>
+          </Link>
+        </div>
+
         {/* Tempat Pengumuman di Halaman Depan */}
         <AnnouncementCard variant="login" />
 

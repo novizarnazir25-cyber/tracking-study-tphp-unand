@@ -14,6 +14,7 @@ import {
   BookOpen,
   HelpCircle,
   Quote,
+  Home,
 } from 'lucide-react';
 import NotificationModal from './NotificationModal';
 
@@ -113,7 +114,17 @@ export default function Navbar({ user, onUserSwitch }: Props) {
           </Link>
 
           {/* Right Header Navigation & Actions */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Tombol Utama ke Beranda / Halaman Utama */}
+            <Link
+              href={user?.role === 'MAHASISWA' ? '/mahasiswa/portal' : '/dashboard'}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-white/15 hover:bg-white/25 transition border border-white/20 shadow-xs"
+              title="Ke Halaman Utama / Beranda Sistem"
+            >
+              <Home className="w-3.5 h-3.5 text-gold-300" />
+              <span>Beranda</span>
+            </Link>
+
             {/* Tautan Navigasi Kata Pengantar */}
             <Link
               href="/kata-pengantar"

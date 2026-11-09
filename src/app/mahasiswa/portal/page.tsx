@@ -28,6 +28,7 @@ import {
   TrendingUp,
   RotateCcw,
   ExternalLink,
+  Home,
 } from 'lucide-react';
 
 const STAGE_NAMES: Record<string, string> = {
@@ -107,6 +108,17 @@ export default function MahasiswaPortalPage() {
         <Sidebar userRole={currentUser?.role} />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
+          {/* Breadcrumb & Tombol Beranda */}
+          <div className="flex items-center justify-between">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-unand-800 hover:bg-slate-50 transition shadow-2xs"
+            >
+              <Home className="w-4 h-4 text-unand-800" />
+              <span>&larr; Beranda Utama TPHP StudyTrack</span>
+            </Link>
+          </div>
+
           {/* Toast Notification */}
           {toastMessage && (
             <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs animate-in fade-in">

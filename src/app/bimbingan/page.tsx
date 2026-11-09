@@ -32,6 +32,7 @@ import {
   Layers,
   Sparkles,
   CheckCircle2,
+  Home,
 } from 'lucide-react';
 
 export default function BimbinganPage() {
@@ -121,6 +122,17 @@ export default function BimbinganPage() {
         <Sidebar userRole={currentUser?.role || 'DOSEN'} />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
+          {/* Breadcrumb & Tombol Beranda */}
+          <div className="flex items-center justify-between">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-unand-800 hover:bg-slate-50 transition shadow-2xs"
+            >
+              <Home className="w-4 h-4 text-unand-800" />
+              <span>&larr; Kembali ke Beranda / Halaman Utama</span>
+            </Link>
+          </div>
+
           {/* Header */}
           <div className="bg-gradient-to-r from-unand-950 via-unand-900 to-unand-800 text-white rounded-2xl p-6 shadow-md border border-unand-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>

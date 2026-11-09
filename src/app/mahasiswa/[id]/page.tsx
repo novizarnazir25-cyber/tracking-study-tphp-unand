@@ -32,6 +32,7 @@ import {
   Award,
   AlertTriangle,
   X,
+  Home,
 } from 'lucide-react';
 
 export default function StudentDetailPage() {
@@ -193,12 +194,22 @@ export default function StudentDetailPage() {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
           {/* Back Navigation Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <Link
-              href="/mahasiswa"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-unand-800 transition"
-            >
-              <ArrowLeft className="w-4 h-4" /> Kembali ke Tabel Pemantauan
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-unand-800 hover:bg-slate-50 transition shadow-2xs"
+                title="Ke Halaman Utama / Beranda"
+              >
+                <Home className="w-4 h-4 text-unand-800" />
+                <span>Beranda Utama</span>
+              </Link>
+              <Link
+                href="/mahasiswa"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:text-unand-800 hover:bg-slate-50 transition shadow-2xs"
+              >
+                <ArrowLeft className="w-4 h-4" /> Kembali ke Tabel Mahasiswa
+              </Link>
+            </div>
 
             {/* Quick Actions */}
             <div className="flex flex-wrap items-center gap-2">
