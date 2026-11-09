@@ -2,23 +2,24 @@ import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
 /**
- * Memastikan setiap mahasiswa TPHP yang berstatus aktif memiliki akun User untuk login.
+ * Memastikan seluruh mahasiswa TPHP memiliki akun User untuk login.
  * Username: NIM mahasiswa
  * Password default: NIM mahasiswa (dan juga dapat diakses dengan 'mhs123')
  */
-export async function ensureStudentUserAccounts() {
+export async function ensureStudentUserAccounts(options: { resetPassword?: boolean; includeAll?: boolean } = {}) {
   try {
-    const activeStudents = await prisma.student.findMany({
-      where: {
-        statusAkademik: 'aktif',
-        isArchived: false,
-      },
+    const whereCondition = options.includeAll
+      ? { isArchived: false }
+      : { isArchived: false }; // Buatkan untuk seluruh mahasiswa yang tidak diarsipkan
+
+    const students = await prisma.student.findMany({
+      where: whereCondition,
     });
 
-    const defaultPasswordHash = await bcrypt.hash('mhs123', 10);
-
     let createdCount = 0;
-    for (const st of activeStudents) {
+    let updatedCount = 0;
+
+    for (const st of students) {
       const existingUser = await prisma.user.findFirst({
         where: {
           OR: [
@@ -28,9 +29,9 @@ export async function ensureStudentUserAccounts() {
         },
       });
 
+      const nimPasswordHash = await bcrypt.hash(st.nim, 10);
+
       if (!existingUser) {
-        // Hash NIM sebagai password utama
-        const nimPasswordHash = await bcrypt.hash(st.nim, 10);
         await prisma.user.create({
           data: {
             username: st.nim,
@@ -43,18 +44,27 @@ export async function ensureStudentUserAccounts() {
           },
         });
         createdCount++;
-      } else if (!existingUser.studentId || existingUser.role !== 'MAHASISWA') {
+      } else {
+        const updateData: any = {
+          studentId: st.id,
+          role: 'MAHASISWA',
+          name: st.nama,
+          isActive: true,
+        };
+
+        if (options.resetPassword) {
+          updateData.password = nimPasswordHash;
+        }
+
         await prisma.user.update({
           where: { id: existingUser.id },
-          data: {
-            studentId: st.id,
-            role: 'MAHASISWA',
-          },
+          data: updateData,
         });
+        updatedCount++;
       }
     }
 
-    return { totalActive: activeStudents.length, createdCount };
+    return { total: students.length, createdCount, updatedCount };
   } catch (err) {
     console.error('Error saat sinkronisasi akun mahasiswa:', err);
     throw err;

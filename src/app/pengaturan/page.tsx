@@ -27,6 +27,11 @@ import {
   Edit3,
   ExternalLink,
   Home,
+  GraduationCap,
+  Key,
+  RefreshCw,
+  UserCheck,
+  Search,
 } from 'lucide-react';
 
 export default function PengaturanPage() {
@@ -60,6 +65,14 @@ export default function PengaturanPage() {
   const [restoreLoading, setRestoreLoading] = useState(false);
   const [showKataPengantarModal, setShowKataPengantarModal] = useState(false);
   const [kataPengantarData, setKataPengantarData] = useState<any>(null);
+
+  // Student accounts management state
+  const [studentAccounts, setStudentAccounts] = useState<any[]>([]);
+  const [studentStats, setStudentStats] = useState<any>(null);
+  const [accountActionLoading, setAccountActionLoading] = useState(false);
+  const [accountActionMsg, setAccountActionMsg] = useState<string | null>(null);
+  const [showAccountsTable, setShowAccountsTable] = useState(false);
+  const [accountSearch, setAccountSearch] = useState('');
 
   const fetchSettings = async () => {
     setLoading(true);
@@ -105,6 +118,14 @@ export default function PengaturanPage() {
       const demoRes = await fetch('/api/demo/toggle');
       const demoData = await demoRes.json();
       setDemoCount(demoData.demoCount || 0);
+
+      // Load student accounts
+      const accRes = await fetch('/api/student/accounts');
+      if (accRes.ok) {
+        const accData = await accRes.json();
+        setStudentAccounts(accData.data || []);
+        setStudentStats(accData.stats || null);
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -194,6 +215,64 @@ export default function PengaturanPage() {
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleSyncStudentAccounts = async () => {
+    setAccountActionLoading(true);
+    setAccountActionMsg(null);
+    try {
+      const res = await fetch('/api/student/accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'sync_all' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal menyinkronkan akun.');
+      setAccountActionMsg(data.message);
+      fetchSettings();
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setAccountActionLoading(false);
+    }
+  };
+
+  const handleResetAllStudentPasswords = async () => {
+    if (!confirm('Yakin ingin mereset seluruh kata sandi akun mahasiswa ke NIM masing-masing?')) return;
+    setAccountActionLoading(true);
+    setAccountActionMsg(null);
+    try {
+      const res = await fetch('/api/student/accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reset_all_passwords' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal reset kata sandi.');
+      setAccountActionMsg(data.message);
+      fetchSettings();
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setAccountActionLoading(false);
+    }
+  };
+
+  const handleResetSinglePassword = async (studentId: string, nim: string, nama: string) => {
+    if (!confirm(`Reset kata sandi mahasiswa ${nama} (${nim}) ke NIM-nya?`)) return;
+    try {
+      const res = await fetch('/api/student/accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reset_single', studentId, nim }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal reset kata sandi.');
+      alert(data.message);
+      fetchSettings();
+    } catch (e: any) {
+      alert(e.message);
+    }
   };
 
   return (
@@ -567,6 +646,165 @@ export default function PengaturanPage() {
                   {kataPengantarData?.p1 || 'Puji syukur ke hadirat Allah SWT atas rahmat dan karunia-Nya...'}
                 </p>
               </div>
+            </div>
+          </div>
+
+          {/* Group 4.6: Manajemen Akun Pengguna Mahasiswa TPHP */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-purple-700" />
+                <div>
+                  <h3 className="font-bold text-sm text-slate-900">
+                    Manajemen Akun Pengguna Mahasiswa TPHP
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Pengelolaan akses masuk mandiri mahasiswa tingkat akhir dengan Username NIM & Password bawaan.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  disabled={accountActionLoading}
+                  onClick={handleSyncStudentAccounts}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-semibold shadow-xs transition disabled:opacity-50"
+                  title="Pastikan setiap mahasiswa terdaftar memiliki akun login aktif"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${accountActionLoading ? 'animate-spin' : ''}`} />
+                  <span>Sinkronkan Akun</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={accountActionLoading}
+                  onClick={handleResetAllStudentPasswords}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-semibold shadow-xs transition disabled:opacity-50"
+                  title="Kembalikan kata sandi seluruh mahasiswa ke NIM masing-masing"
+                >
+                  <Key className="w-3.5 h-3.5" />
+                  <span>Reset Password Semua</span>
+                </button>
+              </div>
+            </div>
+
+            {accountActionMsg && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-semibold flex items-center justify-between">
+                <span>{accountActionMsg}</span>
+                <button onClick={() => setAccountActionMsg(null)} className="text-emerald-700 font-bold">&times;</button>
+              </div>
+            )}
+
+            {/* Statistik Ringkas */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div className="p-3.5 bg-purple-50/70 border border-purple-100 rounded-xl">
+                <span className="text-[11px] text-purple-700 font-bold uppercase tracking-wider block">
+                  Total Mahasiswa
+                </span>
+                <span className="text-2xl font-black text-purple-950 mt-1 block">
+                  {studentStats?.totalStudents || studentAccounts.length} Mahasiswa
+                </span>
+                <span className="text-[10px] text-purple-600 mt-0.5 block">Terdata di sistem akademik</span>
+              </div>
+
+              <div className="p-3.5 bg-emerald-50/70 border border-emerald-100 rounded-xl">
+                <span className="text-[11px] text-emerald-700 font-bold uppercase tracking-wider block">
+                  Akun Siap Masuk
+                </span>
+                <span className="text-2xl font-black text-emerald-950 mt-1 block">
+                  {studentStats?.withAccountCount || studentAccounts.length} Akun
+                </span>
+                <span className="text-[10px] text-emerald-600 mt-0.5 block">100% Akun User Aktif</span>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <span className="text-[11px] text-slate-500 font-bold uppercase tracking-wider block">
+                  Format Kredensial Bawaan
+                </span>
+                <p className="text-xs text-slate-800 font-semibold mt-1">
+                  User: <strong className="font-mono text-purple-900">NIM Mahasiswa</strong>
+                </p>
+                <p className="text-[11px] text-slate-600 mt-0.5">
+                  Sandi: <strong className="font-mono text-slate-900">NIM</strong> atau <code className="font-mono bg-white px-1 border rounded">mhs123</code>
+                </p>
+              </div>
+            </div>
+
+            {/* Toggle Tabel Akun Mahasiswa */}
+            <div className="pt-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAccountsTable(!showAccountsTable)}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-800 hover:text-purple-950 transition"
+                >
+                  <UserCheck className="w-4 h-4" />
+                  <span>
+                    {showAccountsTable ? 'Sembunyikan Tabel Akun Mahasiswa' : `Lihat & Kelola Daftar ${studentAccounts.length} Akun Mahasiswa`}
+                  </span>
+                </button>
+
+                {showAccountsTable && (
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Cari NIM / Nama..."
+                      value={accountSearch}
+                      onChange={(e) => setAccountSearch(e.target.value)}
+                      className="w-full pl-8 pr-3 py-1 text-xs border rounded-lg bg-slate-50 focus:bg-white"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {showAccountsTable && (
+                <div className="mt-3 border border-slate-200 rounded-xl overflow-hidden max-h-72 overflow-y-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-slate-100 text-slate-700 font-bold border-b sticky top-0">
+                      <tr>
+                        <th className="py-2 px-3">NIM (Username)</th>
+                        <th className="py-2 px-3">Nama Mahasiswa</th>
+                        <th className="py-2 px-3">Angkatan</th>
+                        <th className="py-2 px-3">Pembimbing Utama</th>
+                        <th className="py-2 px-3">Status Akun</th>
+                        <th className="py-2 px-3 text-right">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {studentAccounts
+                        .filter(
+                          (st) =>
+                            !accountSearch ||
+                            st.nama?.toLowerCase().includes(accountSearch.toLowerCase()) ||
+                            st.nim?.includes(accountSearch)
+                        )
+                        .map((st) => (
+                          <tr key={st.id} className="hover:bg-slate-50">
+                            <td className="py-2 px-3 font-mono font-bold text-purple-900">{st.nim}</td>
+                            <td className="py-2 px-3 font-semibold text-slate-900">{st.nama}</td>
+                            <td className="py-2 px-3">{st.angkatan}</td>
+                            <td className="py-2 px-3 text-slate-600">{st.pembimbingUtama?.namaGelar || '-'}</td>
+                            <td className="py-2 px-3">
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                <CheckCircle className="w-3 h-3 text-emerald-600" /> Aktif
+                              </span>
+                            </td>
+                            <td className="py-2 px-3 text-right">
+                              <button
+                                type="button"
+                                onClick={() => handleResetSinglePassword(st.id, st.nim, st.nama)}
+                                className="px-2 py-1 text-[11px] font-medium text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-md transition"
+                                title="Reset sandi ke NIM"
+                              >
+                                Reset Sandi
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
 
