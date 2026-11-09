@@ -12,6 +12,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from 'lucide-react';
+import AnnouncementCard from '@/components/AnnouncementCard';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -96,7 +97,10 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg px-4 space-y-4">
+        {/* Tempat Pengumuman di Halaman Depan */}
+        <AnnouncementCard variant="login" />
+
         <div className="bg-white py-8 px-6 shadow-2xl rounded-2xl border border-slate-100 sm:px-10">
           {/* Foto Kegiatan FATETA Unand */}
           <div className="mb-5 rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm bg-slate-50 group">

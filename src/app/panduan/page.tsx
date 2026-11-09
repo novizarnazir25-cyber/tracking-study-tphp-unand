@@ -326,6 +326,15 @@ export default function PanduanPage() {
 
                 <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-2">
                   <h3 className="font-bold text-sm text-slate-900">
+                    Memperbarui Pengumuman Resmi di Halaman Depan
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Ketua Program Studi dapat memperbarui pengumuman resmi prodi secara langsung. Pada kartu <strong>"📢 Pengumuman Program Studi"</strong> di halaman depan, klik tombol <strong>"Perbarui Pengumuman"</strong>. Masukkan judul, kategori label (misal: <em>Penting, Agenda Seminar & Sidang, Batas Waktu Pelaporan</em>), serta isi instruksi lengkap. Pengumuman akan langsung tampil di halaman depan untuk seluruh mahasiswa dan bapak/ibu dosen.
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-2">
+                  <h3 className="font-bold text-sm text-slate-900">
                     Bahan Rapat Evaluasi & Resume Kemajuan Studi (PDF Siap Cetak)
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">

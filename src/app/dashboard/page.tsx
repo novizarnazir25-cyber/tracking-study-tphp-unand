@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import DemoBanner from '@/components/DemoBanner';
 import StatusBadge from '@/components/StatusBadge';
+import AnnouncementCard from '@/components/AnnouncementCard';
 import {
   Users,
   AlertTriangle,
@@ -319,6 +320,9 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+
+          {/* Tempat Pengumuman Resmi Program Studi di Halaman Depan */}
+          <AnnouncementCard variant="dashboard" userRole={currentUser?.role} />
 
           {/* Top 11 Indicator Metric Cards */}
           <div>

@@ -14,6 +14,7 @@
 - Menyediakan tombol khusus **"Belum Ada Perubahan"** yang memperbarui tanggal pelaporan tanpa memajukan tanggal kemajuan substantif.
 - Mengidentifikasi hambatan dini mahasiswa (perlu perhatian / prioritas pendampingan).
 - Mencegah penimpaan data tanpa sengaja saat dua pembimbing mengedit bersamaan (*Optimistic Concurrency Control*).
+- Menyediakan **Papan Pengumuman Resmi di Halaman Depan**: Ruang pengumuman penting bagi mahasiswa dan dosen di beranda depan yang dapat diperbarui secara mandiri oleh Ketua Program Studi sewaktu-waktu.
 - Menyediakan **Pendaftaran Mahasiswa Mandiri oleh Dosen Pembimbing**: Setiap dosen dapat mendaftarkan mahasiswa bimbingannya secara langsung melalui tombol *"+ Tambah Mahasiswa Bimbingan"*.
 - Menyediakan **Pengisian Kolom Bimbingan Terpadu**: Dosen pembimbing dapat mengisi judul skripsi definitif, topik penelitian pangan, tahapan, target sidang, dan kontak WhatsApp/email mahasiswa dalam format Tampilan Kartu maupun Tabel Kolom Bimbingan.
 - Menyediakan **Halaman Panduan Penggunaan Interaktif (`/panduan`)**: Dokumentasi sistem interaktif per peran (Admin, Kaprodi, Dosen) dengan fitur pencarian cepat.
@@ -169,6 +170,15 @@ Sistem dilengkapi **Mode Data Demonstrasi** dengan 30 mahasiswa fiktif yang mewa
    - Masukkan NIM, Nama, Angkatan, pilih peran (Utama/Pendamping), rekan pembimbing, tahapan, target sidang, dan kontak WhatsApp/email.
 7. **Isi & Pembaruan Kolom Bimbingan**:
    - Klik tombol **"Isi Kolom Bimbingan"** pada kartu mahasiswa atau aktifkan tombol **"Tabel Kolom Bimbingan"** untuk memperbarui judul skripsi, topik riset pangan, tahapan, target sidang, dan kontak mahasiswa dalam format tabel terpadu.
+
+### C. Untuk Ketua Program Studi:
+1. Masuk menggunakan akun `kaprodi` / `kaprodi123` (atau akun dosen Prof. Dr. Novizar Nazir).
+2. **Perbarui Pengumuman Halaman Depan**:
+   - Pada kartu **"📢 Pengumuman Program Studi"** di beranda depan, klik tombol **"Perbarui Pengumuman"**.
+   - Perbarui judul, label kategori (misal: *Penting, Agenda Seminar & Sidang, Batas Waktu Pelaporan*), dan pesan instruksi prodi.
+   - Klik **Simpan & Publikasikan Pengumuman** untuk langsung menayangkannya ke seluruh sivitas akademika.
+3. **Bahan Rapat Evaluasi & Resume Studi**:
+   - Buka menu **Tindak Lanjut** &rarr; pilih tab **Bahan Rapat & Resume Evaluasi** &rarr; unduh dokumen resmi PDF siap cetak ber-kop surat dan bertanda tangan Ketua Prodi.
 
 ---
 
