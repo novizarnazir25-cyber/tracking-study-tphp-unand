@@ -111,49 +111,51 @@ export default function KataPengantarSection({
         </div>
 
         {/* Main Content Layout: Desktop (Side by side) & Mobile (Photo on top) */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-10">
-          {/* Sisi Kiri: Foto Resmi Ketua Departemen */}
-          <div className="w-full sm:w-72 md:w-64 lg:w-72 shrink-0 flex flex-col items-center text-center">
-            {/* Bingkai Sederhana dengan Sudut Sedikit Membulat */}
-            <div className="relative w-52 sm:w-64 md:w-full aspect-[3/4] rounded-2xl border-2 border-slate-200/90 p-1.5 bg-white shadow-md overflow-hidden group hover:border-unand-700 transition-colors">
-              {!imageError ? (
-                <img
-                  src={data.fotoUrl || '/ketua-departemen.jpg'}
-                  alt="Foto Ketua Departemen Teknologi Pangan dan Hasil Pertanian, Universitas Andalas"
-                  onError={() => setImageError(true)}
-                  className="w-full h-full object-cover object-top rounded-xl"
-                />
-              ) : (
-                /* Fallback Placeholder Resmi */
-                <div className="w-full h-full rounded-xl bg-gradient-to-br from-unand-950 to-slate-900 flex flex-col items-center justify-center p-4 text-center text-white">
-                  <div className="w-16 h-16 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-300 font-extrabold text-xl mb-3">
-                    NN
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-6 lg:gap-8">
+          {/* Sisi Kiri: Kartu Profil Ringkas Pejabat & Foto Resmi (Tidak memanjang & tidak mendominasi) */}
+          <div className="w-full sm:w-60 md:w-52 lg:w-56 shrink-0 flex flex-col items-center">
+            <div className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl p-4 flex flex-col items-center text-center shadow-2xs">
+              {/* Bingkai Foto Proporsional: Rasio Asli 1:1, Ukuran Kompak, Wajah Utuh */}
+              <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl border-2 border-slate-200 bg-white p-1 shadow-xs overflow-hidden group hover:border-unand-700 transition-colors">
+                {!imageError ? (
+                  <img
+                    src={data.fotoUrl || '/ketua-departemen.jpg'}
+                    alt="Foto Ketua Departemen Teknologi Pangan dan Hasil Pertanian, Universitas Andalas"
+                    onError={() => setImageError(true)}
+                    className="w-full h-full object-cover object-top rounded-xl"
+                  />
+                ) : (
+                  /* Fallback Placeholder Resmi */
+                  <div className="w-full h-full rounded-xl bg-gradient-to-br from-unand-950 to-slate-900 flex flex-col items-center justify-center p-3 text-center text-white">
+                    <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-300 font-bold text-sm mb-1.5">
+                      NN
+                    </div>
+                    <GraduationCap className="w-4 h-4 text-gold-400 mb-0.5" />
+                    <span className="text-[10px] font-bold text-white block">Foto Resmi</span>
+                    <span className="text-[9px] text-slate-300 block">TPHP FATETA</span>
                   </div>
-                  <GraduationCap className="w-6 h-6 text-gold-400 mb-1" />
-                  <span className="text-xs font-bold text-white block">Foto Resmi Pejabat</span>
-                  <span className="text-[10px] text-slate-300 block mt-0.5">Departemen TPHP</span>
+                )}
+
+                {/* Badge Departemen TPHP halus di bagian bawah foto */}
+                <div className="absolute bottom-1.5 left-2 right-2 text-center pointer-events-none">
+                  <span className="inline-block bg-slate-950/75 text-gold-300 text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-xs border border-white/10 shadow-xs">
+                    TPHP UNAND
+                  </span>
                 </div>
-              )}
-
-              {/* Watermark badge kecil di sudut foto */}
-              <div className="absolute bottom-3 left-3 right-3 text-center">
-                <span className="inline-block bg-slate-950/80 text-gold-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-xs border border-white/10 shadow-xs">
-                  Departemen TPHP
-                </span>
               </div>
-            </div>
 
-            {/* Identitas di Bawah Foto */}
-            <div className="mt-4 space-y-1 w-full px-2">
-              <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                {data.nama || 'Prof. Dr. Novizar Nazir'}
-              </h4>
-              <p className="text-xs font-semibold text-unand-800 leading-tight">
-                {data.jabatan || 'Ketua Departemen Teknologi Pangan dan Hasil Pertanian'}
-              </p>
-              <p className="text-[11px] text-slate-500 leading-tight">
-                {data.fakultas || 'Fakultas Teknologi Pertanian, Universitas Andalas'}
-              </p>
+              {/* Identitas di Bawah Foto (Langsung terlihat tanpa scroll) */}
+              <div className="mt-3 space-y-1 w-full">
+                <h4 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-snug">
+                  {data.nama || 'Prof. Dr. Novizar Nazir'}
+                </h4>
+                <p className="text-[11px] font-semibold text-unand-800 leading-tight">
+                  {data.jabatan || 'Ketua Departemen Teknologi Pangan dan Hasil Pertanian'}
+                </p>
+                <p className="text-[10px] text-slate-500 leading-tight">
+                  {data.fakultas || 'Fakultas Teknologi Pertanian, Universitas Andalas'}
+                </p>
+              </div>
             </div>
           </div>
 
